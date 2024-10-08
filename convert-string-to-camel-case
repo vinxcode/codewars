@@ -4,33 +4,45 @@ function toCamelCase(str){
     return letter === letter.toUpperCase();
   }
   
-  let arr =  str.split('_')
-  console.log(arr)
+  let areScores = false 
+  let words = []
+  let str2 = str
   
-  const areBars = arr.filter(word => word.includes('-'))
-  if(areBars){
-    arr.concat([1,2])
-  }
+  let scoreIndex = str2.search(/[-_]/)
   
-  console.log(arr)
+      do{
+          if(scoreIndex>=0){
+            let newStr = str2.slice(0,scoreIndex)
+            words.push(newStr)
+            str2 = str2.slice(scoreIndex+1, str2.length)
+
+            scoreIndex = str2.search(/[-_]/)
+            
+            if(scoreIndex>=0){
+              areScores = true
+            } else {
+              words.push(str2)
+            }
+            
+          } else {
+            areScores = false
+          }
+      } while(areScores)
+      
+      const result = words.map(word => word.replace(
+      word.charAt(0),
+      word.charAt(0).toUpperCase()
+      ))
+    
+  let response = result.join("")
   
-  const newArr = []
-  newArr[0] = arr[0]
-  for(i=1;i<arr.length;i++){
-    newArr[i] = arr[i].replace(
-      arr[i].charAt(0),
-      arr[i].charAt(0).toUpperCase())
-  }
-  
-  let response = ''
-  response = newArr.join("")
-  
-  return !isUpperCase(str.charAt(0)) ? response : response.replace(
+  console.log(str.charAt(0))
+  return isUpperCase(str.charAt(0)) ? 
+    response
+    : 
+    response.replace(
     response.charAt(0),
-    response.charAt(0).toUpperCase()
-  )
-  
+    response.charAt(0).toLowerCase())
 }
 
-console.log(toCamelCase('The_Stealth-Warrior_uh-beibi'))
 
